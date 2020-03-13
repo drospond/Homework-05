@@ -3,10 +3,10 @@ $(document).ready(function() {
 
   $("#currentDay").text(moment().format("MMMM Do YYYY"));
 
-  function init(){
-    if(localStorage.getItem("calendarArray") !== null){
+  function init() {
+    if (localStorage.getItem("calendarArray") !== null) {
       calendarArray = JSON.parse(localStorage.getItem("calendarArray"));
-    }else{
+    } else {
       localStorage.setItem("calendarArray", JSON.stringify(calendarArray));
     }
   }
@@ -27,12 +27,12 @@ $(document).ready(function() {
     hourEl.text(timeText);
     var textareaEl = $("<textarea>");
     textareaEl.addClass("col-10");
-    textareaEl.val(calendarArray[i- 9]);
-    if(moment().hour() > i){
+    textareaEl.val(calendarArray[i - 9]);
+    if (moment().hour() > i) {
       textareaEl.addClass("past");
-    }else if(moment().hour() == i){
+    } else if (moment().hour() == i) {
       textareaEl.addClass("present");
-    }else {
+    } else {
       textareaEl.addClass("future");
     }
     var saveButton = $("<button>");
@@ -45,15 +45,12 @@ $(document).ready(function() {
   }
 
   function save(event) {
-    if (event.target.type === "submit") {
-      calendarArray[parseInt(event.target.getAttribute("data-time")) - 9] =
-        event.target.previousSibling.value;
-      localStorage.setItem("calendarArray", JSON.stringify(calendarArray));
-      console.log(calendarArray);
-    }
+    calendarArray[parseInt($(this).attr("data-time")) - 9] = $(this).prev().val();
+    localStorage.setItem("calendarArray", JSON.stringify(calendarArray));
+    console.log(calendarArray);
   }
 
-  $("#calendar").on("click", save);
+  $("#calendar").on("click", ".saveBtn", save);
 
   console.log(moment("2013-02-08 09").format("LT"));
 });
