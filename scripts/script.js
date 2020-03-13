@@ -36,7 +36,7 @@ $(document).ready(function() {
       textareaEl.addClass("future");
     }
     var saveButton = $("<button>");
-    saveButton.addClass("col-1 saveBtn");
+    saveButton.addClass("col-1 saveBtn far fa-save fa-2x");
     saveButton.attr("data-time", i);
     $("#calendar").append(timeBlock);
     timeBlock.append(hourEl);
@@ -54,7 +54,3 @@ $(document).ready(function() {
 
   console.log(moment("2013-02-08 09").format("LT"));
 });
-
-//TODO
-//check if works with empty local storage
-//change block color based on time
