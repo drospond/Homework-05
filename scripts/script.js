@@ -1,48 +1,53 @@
-$(document).ready(function(){
-    $("#currentDay").text(moment().format('MMMM Do YYYY'));
+$(document).ready(function() {
+  var calendarArray = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
 
-    for(var i = 9; i < 18; i++){
-        var timeText;
-        if(i ===9){
-            timeText = moment("2013-02-08 0" + i).format("LT");
-        } else{
-            timeText = moment("2013-02-08 " + i).format("LT");
-        }
-        var timeBlock = $("<div>");
-        timeBlock.addClass("row time-block");
-        var hourEl = $("<div>");
-        hourEl.addClass("col-1 hour");
-        hourEl.text(timeText);
-        var textareaEl = $("<textarea>");
-        textareaEl.addClass("col-10 future");
-        var saveButton = $("<button>"); 
-        saveButton.addClass("col-1 saveBtn");
-        $("#calendar").append(timeBlock);
-        timeBlock.append(hourEl);
-        timeBlock.append(textareaEl);
-        timeBlock.append(saveButton);
+  $("#currentDay").text(moment().format("MMMM Do YYYY"));
+
+  function init(){
+      calendarArray = JSON.parse(localStorage.getItem("calendarArray"));
+      console.log("init: " + calendarArray);
+  }
+
+  init();
+
+  for (var i = 9; i < 18; i++) {
+    var timeText;
+    if (i === 9) {
+      timeText = moment("2013-02-08 0" + i).format("LT");
+    } else {
+      timeText = moment("2013-02-08 " + i).format("LT");
     }
+    var timeBlock = $("<div>");
+    timeBlock.addClass("row time-block");
+    var hourEl = $("<div>");
+    hourEl.addClass("col-1 hour");
+    hourEl.text(timeText);
+    var textareaEl = $("<textarea>");
+    textareaEl.addClass("col-10 future");
+    textareaEl.val(calendarArray[i- 9])
+    var saveButton = $("<button>");
+    saveButton.addClass("col-1 saveBtn");
+    saveButton.attr("data-time", i);
+    $("#calendar").append(timeBlock);
+    timeBlock.append(hourEl);
+    timeBlock.append(textareaEl);
+    timeBlock.append(saveButton);
+  }
 
-    function save(event){
-        if(event.target.type === "submit"){
-        console.log(event.target.type);
-        }
+  function save(event) {
+    if (event.target.type === "submit") {
+      calendarArray[parseInt(event.target.getAttribute("data-time")) - 9] =
+        event.target.previousSibling.value;
+      localStorage.setItem("calendarArray", JSON.stringify(calendarArray));
+      console.log(calendarArray);
     }
+  }
 
-    $("#calendar").on("click", save);
+  $("#calendar").on("click", save);
 
-    console.log(moment("2013-02-08 09").format("LT"));
-    // <div class="row time-block">
-    //     <div class="col-1 hour"><span>9:00</span></div>
-    //     <textarea class="col-10 future textarea"></textarea>
-    //     <div class="col-1 saveBtn"><i class="far fa-save fa-3x"></i></div>
-    // </div>
-
-
-
-
-
-
-
-
+  console.log(moment("2013-02-08 09").format("LT"));
 });
+
+//TODO
+//check if works with empty local storage
+//change block color based on time
