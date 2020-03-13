@@ -4,8 +4,11 @@ $(document).ready(function() {
   $("#currentDay").text(moment().format("MMMM Do YYYY"));
 
   function init(){
+    if(localStorage.getItem("calendarArray") !== null){
       calendarArray = JSON.parse(localStorage.getItem("calendarArray"));
-      console.log("init: " + calendarArray);
+    }else{
+      localStorage.setItem("calendarArray", JSON.stringify(calendarArray));
+    }
   }
 
   init();
@@ -23,8 +26,15 @@ $(document).ready(function() {
     hourEl.addClass("col-1 hour");
     hourEl.text(timeText);
     var textareaEl = $("<textarea>");
-    textareaEl.addClass("col-10 future");
-    textareaEl.val(calendarArray[i- 9])
+    textareaEl.addClass("col-10");
+    textareaEl.val(calendarArray[i- 9]);
+    if(moment().hour() > i){
+      textareaEl.addClass("past");
+    }else if(moment().hour() == i){
+      textareaEl.addClass("present");
+    }else {
+      textareaEl.addClass("future");
+    }
     var saveButton = $("<button>");
     saveButton.addClass("col-1 saveBtn");
     saveButton.attr("data-time", i);
